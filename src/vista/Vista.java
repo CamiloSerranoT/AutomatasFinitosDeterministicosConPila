@@ -7,7 +7,6 @@ package vista;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import negocio.Controlador;
 
 /**

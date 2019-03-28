@@ -5,7 +5,6 @@
  */
 package negocio;
 
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import static javax.swing.BorderFactory.createLineBorder;
@@ -118,7 +117,6 @@ public class Controlador {
                 }
             }
 
-            //vista.setMatriz(matriz);
             jb1.setEnabled(false);
             jb4.setEnabled(true);
         }
