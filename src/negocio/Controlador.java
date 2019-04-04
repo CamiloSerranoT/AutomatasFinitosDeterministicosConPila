@@ -14,9 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 import vista.Lista;
 import vista.Vista;
 
@@ -46,29 +44,44 @@ public class Controlador {
         lista.setVisible(false);
     }
 
-    public void creacionMatriz(JComboBox jComboBox, Vista vista, JPanel jPanel3, JButton jb1, JButton jb4, String[][] matriz) {
+    public void creacionMatriz(JComboBox jComboBox, Vista vista, JPanel jPanel3, JButton jb1, JButton jb2, String[][] matriz) {
         if (jComboBox.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(null, "Primero debe elegir algun conjunto de estados");
         } else {
-            jComboBox.setEnabled(false);
             vista.setEstados(jComboBox.getSelectedIndex());
             matriz = new String[vista.getEstados()][vista.getEstados()];
             boolean invalido = false;
+            boolean pasable = false;
             String variable = "E";
+            String numerosMatriz = "10";
 
             for (int i = 0; i < vista.getEstados(); i++) {
                 for (int j = 0; j < vista.getEstados(); j++) {
                     matriz[i][j] = JOptionPane.showInputDialog(null, "Digite el valor en la matriz en la posicion[" + i + "][" + j + "]", "Ejemplo: 0 o 1");
+                    do {
+                        if (matriz[i][j].charAt(0) == numerosMatriz.charAt(0) && matriz[i][j].length() == 1) {
+                            pasable = false;
+                        } else {
+                            if (matriz[i][j].charAt(0) == numerosMatriz.charAt(1) && matriz[i][j].length() == 1) {
+                                pasable = false;
+                            } else {
+                                pasable = true;
+                                matriz[i][j] = JOptionPane.showInputDialog(null, "                       El valor introducido genera error\n"
+                                        + "Digite de nuevo el valor en la matriz en la posicion[" + i + "][" + j + "]", "Ejemplo: 0 o 1");
+                            }
+                        }
+                    } while (pasable == true);
                     if (matriz[i][j].charAt(0) == variable.charAt(0)) {
                         invalido = true;
                     }
                 }
             }
-
+            
             if (invalido == true) {
                 JOptionPane.showMessageDialog(null, "Falta alguna posicion de la matriz\n          vuelva a intentarlo");
                 vaciarMatriz(matriz, vista);
             } else {
+                jComboBox.setEnabled(false);
                 GridLayout estiloLayout = new GridLayout(vista.getEstados() + 1, vista.getEstados() + 1);
                 estiloLayout.setHgap(1);
                 estiloLayout.setVgap(1);
@@ -107,7 +120,7 @@ public class Controlador {
                                     texto.setForeground(new java.awt.Color(255, 255, 255));
                                     jPanel4.add(texto);
                                 } else {
-                                    texto.setText(matriz[i - 1][i - 1]);
+                                    texto.setText(matriz[i - 1][j - 1]);
                                     texto.setEditable(false);
                                     jPanel4.add(texto);
                                 }
@@ -115,11 +128,19 @@ public class Controlador {
                         }
                     }
                 }
+                jb1.setEnabled(false);
+                jb2.setEnabled(true);
+                vista.setMatriz(matriz);
             }
-
-            jb1.setEnabled(false);
-            jb4.setEnabled(true);
         }
+    }
+
+    public void activacion(JTextField jt2, JTextField jt3, JTextField jt4, JTextField jt5, JTextField jt6) {
+        jt2.setEnabled(true);
+        jt3.setEnabled(true);
+        jt4.setEnabled(true);
+        jt5.setEnabled(true);
+        jt6.setEnabled(true);
     }
 
     public void vaciarMatriz(String[][] matriz, Vista vista) {
@@ -130,29 +151,18 @@ public class Controlador {
         }
     }
 
-    public void validarMatriz(String[][] matriz, Vista vista, JPanel jPanel3, JTextField jt2, JTextField jt3, JTextField jt4, JTextField jt5, JTextField jt6, JTextField jt7) {
-        JOptionPane.showMessageDialog(null, "Profesor, el tiempo no alcanzo para hacer lo demas");
-        jt2.setEnabled(true);
-        jt3.setEnabled(true);
-        jt4.setEnabled(true);
-        jt5.setEnabled(true);
-        jt6.setEnabled(true);
-        jt7.setEnabled(true);
-    }
+    public void validarMatriz(Vista vista, int i, int j) {
+        String numerosMatriz = "10";
+        String[][] matrizOpc = vista.getMatriz();
 
-    public void creacionTabla(DefaultTableModel modeloTabla, Vista vista, JTable jTable1) {
-        String columnas[][] = new String[vista.getEstados()][vista.getEstados()];
-        String nombresTit[] = new String[vista.getEstados()];
-
-        for (int i = 0; i < columnas.length; i++) {
-            nombresTit[i] = "" + i;
-            for (int j = 0; j < columnas.length; j++) {
-                columnas[i][j] = " ";
+        for (i = 0; i < vista.getEstados(); i++) {
+            for (j = 0; j < vista.getEstados(); j++) {
+                if (matrizOpc[i][j].charAt(0) == numerosMatriz.charAt(0)) {
+                    Lista nueva = new Lista(vista, i, j + 1);
+                    vista.setVisible(false);
+                }
             }
         }
-
-        modeloTabla = new DefaultTableModel(columnas, nombresTit);
-        jTable1.setModel(modeloTabla);
     }
 
     public void validar(String jt1, String jt2, String jt3, String jt4, String jt5, String jt6) {

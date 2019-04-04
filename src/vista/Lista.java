@@ -1,4 +1,3 @@
-
 package vista;
 
 import negocio.Controlador;
@@ -15,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-
 public class Lista extends JFrame implements ActionListener {
 
     private JList<String> jList1;
@@ -31,7 +29,7 @@ public class Lista extends JFrame implements ActionListener {
     DefaultListModel modeloVista;
     Vista vista;
 
-    public Lista(Vista vist) {
+    public Lista(Vista vist, int i, int j) {
         crearVista(495, 533);
         setLocationRelativeTo(null);
         modeloVista = new DefaultListModel();

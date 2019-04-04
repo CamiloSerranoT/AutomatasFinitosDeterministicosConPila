@@ -5,8 +5,9 @@
  */
 package vista;
 
-import javax.swing.DefaultListModel;
+import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import negocio.Controlador;
 
 /**
@@ -16,18 +17,9 @@ import negocio.Controlador;
 public class Vista extends JFrame {
 
     Controlador control = new Controlador();
-    DefaultListModel modeloVista;
+    ArrayList<String> listaTransicion;
     String[][] matriz;
-
     int estados;
-
-    public DefaultListModel getModeloVista() {
-        return modeloVista;
-    }
-
-    public void setModeloVista(DefaultListModel modeloVista) {
-        this.modeloVista = modeloVista;
-    }
 
     public int getEstados() {
         return estados;
@@ -43,13 +35,20 @@ public class Vista extends JFrame {
 
     public void setMatriz(String[][] matriz) {
         this.matriz = matriz;
-    }    
+    }
+
+    public ArrayList getListaTransicion() {
+        return listaTransicion;
+    }
+
+    public void setListaTransicion(ArrayList listaTransicion) {
+        this.listaTransicion = listaTransicion;
+    }
 
     public Vista() {
         super("Jamiel");
         initComponents();
         setLocationRelativeTo(null);
-        modeloVista = new DefaultListModel();
         jb2.setEnabled(false);
         jb4.setEnabled(false);
         jt2.setEnabled(false);
@@ -175,7 +174,7 @@ public class Vista extends JFrame {
         });
 
         jb2.setFont(new java.awt.Font("Segoe UI Black", 0, 11)); // NOI18N
-        jb2.setText("Validar");
+        jb2.setText("Validar datos");
         jb2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jb2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -336,16 +335,16 @@ public class Vista extends JFrame {
                         .addGap(119, 119, 119)
                         .addComponent(jb4, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
+                        .addGap(38, 38, 38)
                         .addComponent(jl14)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addContainerGap()
                 .addComponent(jl14, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
                 .addComponent(jb4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12))
         );
@@ -387,7 +386,7 @@ public class Vista extends JFrame {
                 .addGap(30, 30, 30)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jl15, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+                    .addComponent(jl15, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
                         .addGap(107, 107, 107)
                         .addComponent(jb5, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -441,7 +440,8 @@ public class Vista extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jb1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb1ActionPerformed
-        control.creacionMatriz(jComboBox1, this, jPanel3, jb1, jb4, getMatriz());
+        control.activacion(jt2, jt3, jt4, jt5, jt6);
+        control.creacionMatriz(jComboBox1, this, jPanel3, jb1, jb2, getMatriz());
     }//GEN-LAST:event_jb1ActionPerformed
 
     private void jb2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb2ActionPerformed
@@ -453,7 +453,10 @@ public class Vista extends JFrame {
     }//GEN-LAST:event_jb3ActionPerformed
 
     private void jb4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb4ActionPerformed
-        control.validarMatriz(matriz, this, jPanel3, jt2, jt3, jt4, jt5, jt6, jt7);
+        listaTransicion = new ArrayList<String>();
+        int i = 0;
+        int j = 0;
+        control.validarMatriz(this, i, j);
     }//GEN-LAST:event_jb4ActionPerformed
 
     private void jb5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb5ActionPerformed
