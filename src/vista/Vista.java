@@ -456,7 +456,7 @@ public class Vista extends JFrame {
         if (control.getDatosCorrectos() == true) {
             listaTransicion = new ArrayList[getEstados()][getEstados()];
             setListaTransicion(listaTransicion);
-            Funciones funcion = new Funciones(this);
+            Funciones funcion = new Funciones(this, control);
             funcion.setVisible(true);
             this.setVisible(false);
         }

@@ -10,20 +10,21 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import static javax.swing.BorderFactory.createLineBorder;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import negocio.Controlador;
 
 /**
  *
  * @author CAMILO
  */
-public class Funciones extends JFrame implements ActionListener{
+public class Funciones extends JFrame implements ActionListener {
 
     Vista vista;
     FlowLayout estilo;
@@ -31,9 +32,11 @@ public class Funciones extends JFrame implements ActionListener{
     JPanel jPanel2;
     JLabel jl1;
     JButton jb1;
+    Controlador control;
 
-    public Funciones(Vista vist) {
+    public Funciones(Vista vist, Controlador controlar) {
         vista = vist;
+        control = controlar;
         crearVista(500, 350);
     }
 
@@ -123,7 +126,6 @@ public class Funciones extends JFrame implements ActionListener{
         boolean aux = false;
         int cont = 0;
         String[][] matrizAux = vista.getMatriz();
-        ArrayList<String>[][] listaTransiciones = vista.getListaTransicion();
 
         for (int i = 0; i < vista.getEstados() + 1; i++) {
             for (int j = 0; j < vista.getEstados() + 1; j++) {
@@ -182,14 +184,36 @@ public class Funciones extends JFrame implements ActionListener{
         jPanel1.add(jb1);
         this.add(jPanel1);
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        String accion = "cmd=,";
+        String opc = "";
+        int cont = 0;
+        boolean com = false;
         if (e.getSource() == jb1) {
             vista.setVisible(true);
             this.setVisible(false);
-        }else{
-            
+        } else {
+            for (int i = 0; i < e.paramString().length(); i++) {
+                if (accion.charAt(cont) == e.paramString().charAt(i) && com == false) {
+                    if (accion.charAt(cont - 1) == accion.charAt(3)) {
+                        com = true;
+                    }
+
+                }
+                if (com == true && e.paramString().charAt(cont) != accion.charAt(4)) {
+                    opc = opc + Character.toString(e.paramString().charAt(cont));
+                } else {
+                    if (e.paramString().charAt(cont) == accion.charAt(4)) {
+                        com = false;
+                        i = e.paramString().length();
+                    }
+                }
+                cont++;
+            }
+            JOptionPane.showMessageDialog(null, "" + opc);
+            control.fuciones(this, opc);
         }
     }
 }

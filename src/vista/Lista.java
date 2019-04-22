@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,17 +30,29 @@ public class Lista extends JFrame implements ActionListener {
     Controlador control;
     DefaultListModel modeloVista;
     Vista vista;
+    ArrayList<String> listaTransicion;
+    String posicion;
 
-    public Lista(Vista vist, int i, int j) {
+    public Lista(Vista vist, String boton) {
         crearVista(495, 533);
         setLocationRelativeTo(null);
         modeloVista = new DefaultListModel();
         vista = vist;
         jList1.setModel(modeloVista);
+        listaTransicion = new ArrayList<String>();
+        posicion = boton;
+    }
+
+    public ArrayList<String> getListaTransicion() {
+        return listaTransicion;
+    }
+
+    public void setListaTransicion(ArrayList<String> listaTransicion) {
+        this.listaTransicion = listaTransicion;
     }
 
     public void crearVista(int x, int y) {
-        this.setTitle("...........");
+        this.setTitle("Funcion de transición");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(x, y);
         this.setLocationRelativeTo(null);

@@ -7,6 +7,7 @@ package negocio;
 
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import static javax.swing.BorderFactory.createLineBorder;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -15,6 +16,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import vista.Funciones;
 import vista.Lista;
 import vista.Vista;
 
@@ -26,6 +28,9 @@ public class Controlador {
 
     Modelo model1;
     boolean datosCorrectos;
+    ArrayList<String>[][] listaTransiciones;
+    Vista vistaC;
+    Funciones funci;
 
     public Controlador() {
         this.datosCorrectos = false;
@@ -56,6 +61,7 @@ public class Controlador {
     }
 
     public void creacionMatriz(JComboBox jComboBox, Vista vista, JPanel jPanel3, JButton jb1, JButton jb2, String[][] matriz) {
+        vistaC = vista;
         if (jComboBox.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(null, "Primero debe elegir algun conjunto de estados", "ERROR", JOptionPane.ERROR_MESSAGE);
         } else {
@@ -362,6 +368,7 @@ public class Controlador {
         if (comprobacion == true) {
             model1 = new Modelo(jComboBox1.getSelectedIndex(), jt2.getText(), jt3.getText(), jt4.getText(), jt5.getText(), jt6.getText());
             setDatosCorrectos(true);
+            listaTransiciones = vistaC.getListaTransicion();
             jb2.setEnabled(false);
             jb3.setEnabled(true);
         }
@@ -392,8 +399,13 @@ public class Controlador {
 
         return valido;
     }
-    
-    
+
+    public void fuciones(Funciones funcion, String boton) {
+        funci = funcion;
+        Lista lista = new Lista(vistaC, boton);
+        funci.setVisible(false);
+        lista.setVisible(true);
+    }
 
     public void salir() {
         System.exit(0);
