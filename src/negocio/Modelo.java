@@ -5,24 +5,26 @@
  */
 package negocio;
 
+import javax.swing.JTextField;
+
 /**
  *
  * @author CAMILO
  */
 public class Modelo {
 
-    public String conjuntoEstados;
+    public int conjuntoEstados;
     public String qInicial;
     public String f;
     public String alfabetoEntrada;
     public String alfabetoEnPila;
     public String simboloFinalPila;
 
-    public String getConjuntoEstados() {
+    public int getConjuntoEstados() {
         return conjuntoEstados;
     }
 
-    public void setConjuntoEstados(String conjuntoEstados) {
+    public void setConjuntoEstados(int conjuntoEstados) {
         this.conjuntoEstados = conjuntoEstados;
     }
 
@@ -65,7 +67,14 @@ public class Modelo {
     public void setSimboloFinalPila(String simboloFinalPila) {
         this.simboloFinalPila = simboloFinalPila;
     }
-    
-    
-    
+
+    public Modelo(int estados, String jt2, String jt3, String jt4, String jt5, String jt6) {
+        this.conjuntoEstados = estados;
+        this.qInicial = jt2;
+        this.f = jt3;
+        this.alfabetoEntrada = jt4;
+        this.alfabetoEnPila = jt5;
+        this.simboloFinalPila = jt6;
+    }
+
 }

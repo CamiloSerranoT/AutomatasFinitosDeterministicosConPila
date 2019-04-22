@@ -24,8 +24,19 @@ import vista.Vista;
  */
 public class Controlador {
 
-    public Controlador() {
+    Modelo model1;
+    boolean datosCorrectos;
 
+    public Controlador() {
+        this.datosCorrectos = false;
+    }
+
+    public boolean getDatosCorrectos() {
+        return datosCorrectos;
+    }
+
+    public void setDatosCorrectos(boolean datosCorrectos) {
+        this.datosCorrectos = datosCorrectos;
     }
 
     public void agregar(DefaultListModel modeloVista, JTextField jt1) {
@@ -46,7 +57,7 @@ public class Controlador {
 
     public void creacionMatriz(JComboBox jComboBox, Vista vista, JPanel jPanel3, JButton jb1, JButton jb2, String[][] matriz) {
         if (jComboBox.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(null, "Primero debe elegir algun conjunto de estados");
+            JOptionPane.showMessageDialog(null, "Primero debe elegir algun conjunto de estados", "ERROR", JOptionPane.ERROR_MESSAGE);
         } else {
             vista.setEstados(jComboBox.getSelectedIndex());
             matriz = new String[vista.getEstados()][vista.getEstados()];
@@ -76,7 +87,7 @@ public class Controlador {
                     }
                 }
             }
-            
+
             if (invalido == true) {
                 JOptionPane.showMessageDialog(null, "Falta alguna posicion de la matriz\n          vuelva a intentarlo");
                 vaciarMatriz(matriz, vista);
@@ -87,7 +98,7 @@ public class Controlador {
                 estiloLayout.setVgap(1);
                 JPanel jPanel4 = new JPanel(estiloLayout);
                 jPanel3.add(jPanel4);
-                jPanel4.setBounds(45, 70, 360, 90);
+                jPanel4.setBounds(62, 70, 360, 90);
                 jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
                 JTextField texto;
                 boolean aux = false;
@@ -151,23 +162,238 @@ public class Controlador {
         }
     }
 
-    public void validarMatriz(Vista vista, int i, int j) {
-        String numerosMatriz = "10";
-        String[][] matrizOpc = vista.getMatriz();
+    public void validar(JComboBox jComboBox1, JTextField jt2, JTextField jt3, JTextField jt4, JTextField jt5, JTextField jt6, JButton jb2, JButton jb3) {
+        int cont = 0;
+        boolean comprobacion = true;
+        boolean comprobar = false;
+        String coma = ",";
+        int contAux = 0;
 
-        for (i = 0; i < vista.getEstados(); i++) {
-            for (j = 0; j < vista.getEstados(); j++) {
-                if (matrizOpc[i][j].charAt(0) == numerosMatriz.charAt(0)) {
-                    Lista nueva = new Lista(vista, i, j + 1);
-                    vista.setVisible(false);
-                }
+        do {
+            switch (cont) {
+                case 0:
+                    comprobacion = false;
+                    if (jt2.getText().length() == 0) {
+                        JOptionPane.showMessageDialog(null, "El campo de q0 esta vacio"
+                                + "\nEscriba el simbolo deseado para continuar", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        if (jt2.getText().length() != 1) {
+                            JOptionPane.showMessageDialog(null, "El numero de simbolos introducidos en q0 excede los esperados"
+                                    + "\n                                          vuelva a intentarlo"
+                                    + "\n          Los parametros requeridos no pueden ser mayor a 1", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            if (jt2.getText().charAt(0) - 48 >= 0 && jt2.getText().charAt(0) - 48 <= jComboBox1.getSelectedIndex()) {
+                                cont++;
+                                comprobacion = true;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "El estado introducino, no existe"
+                                        + "\n           Vuelva a intentarlo", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }
+                    break;
+                case 1:
+                    String estados = "";
+                    contAux = 0;
+
+                    for (int i = 0; i < jComboBox1.getSelectedIndex(); i++) {
+                        estados = estados + i;
+                    }
+
+                    estados = estados + coma;
+                    comprobacion = false;
+                    if (jt3.getText().length() == 0) {
+                        JOptionPane.showMessageDialog(null, "Necesita minimo un estado de aceptacion o final\n"
+                                + "         vuelva a intentarlo", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        for (int i = 0; i < jt3.getText().length(); i++) {
+                            if (comprobar == false) {
+                                for (int j = 0; j < estados.length() - 1; j++) {
+                                    if (estados.charAt(j) == jt3.getText().charAt(i)) {
+                                        comprobar = true;
+                                        contAux++;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                if (jt3.getText().charAt(i) == estados.charAt(estados.length() - 1)) {
+                                    comprobar = false;
+                                    contAux++;
+                                }
+                            }
+                        }
+
+                        if (contAux == jt3.getText().length()) {
+                            cont++;
+                            comprobacion = true;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Algun simbolo del conjunto de estados de aceptacion"
+                                    + "\n      No concuerda, vuelva a intentarlo", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                    break;
+                case 2:
+                    comprobar = false;
+                    comprobacion = false;
+                    contAux = 0;
+
+                    if (jt4.getText().length() == 0) {
+                        JOptionPane.showMessageDialog(null, "Necesita minimo un simbolo para el alfabeto de entrada\n"
+                                + "         vuelva a intentarlo", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        for (int i = 0; i < jt4.getText().length(); i++) {
+                            if (comprobar == false) {
+                                comprobar = true;
+                                contAux++;
+                            } else {
+                                if (jt4.getText().charAt(i) == coma.charAt(0)) {
+                                    comprobar = false;
+                                    contAux++;
+                                }
+                            }
+                        }
+
+                        if (contAux == jt4.getText().length()) {
+                            comprobacion = true;
+                            cont++;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Algun simbolo del alfabeto de entrada"
+                                    + "\n  No concuerda, vuelva a intentarlo", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                    break;
+                case 3:
+                    comprobar = false;
+                    comprobacion = false;
+                    boolean comp = true;
+                    contAux = 0;
+
+                    if (jt5.getText().length() == 0) {
+                        JOptionPane.showMessageDialog(null, "Necesita minimo un simbolo para el alfabeto de entrada\n"
+                                + "         vuelva a intentarlo", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        for (int i = 0; i < jt5.getText().length(); i++) {
+                            if (comprobar == false) {
+                                for (int j = 0; j < jt4.getText().length(); j++) {
+                                    if (jt4.getText().charAt(j) == jt5.getText().charAt(i)) {
+                                        comp = false;
+                                    }
+                                }
+                                if (comp == true) {
+                                    comprobar = true;
+                                    contAux++;
+                                }
+                            } else {
+                                if (jt4.getText().charAt(i) == coma.charAt(0)) {
+                                    comprobar = false;
+                                    contAux++;
+                                }
+                            }
+                        }
+
+                        if (contAux == jt5.getText().length()) {
+                            comprobacion = true;
+                            cont++;
+                        } else {
+                            if (comp == false) {
+                                JOptionPane.showMessageDialog(null, "Algun simbolo del alfabeto de entrada de la pila"
+                                        + "\n  Es igual a uno de Σ y esto no se puede"
+                                        + "\n       vuelva a intentarlo", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Algun simbolo del alfabeto de entrada de la pila"
+                                        + "\n  No concuerda, vuelva a intentarlo", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+                    }
+                    break;
+                case 4:
+                    comprobacion = false;
+                    contAux = 0;
+                    comprobar = false;
+                    if (jt6.getText().length() == 0) {
+                        JOptionPane.showMessageDialog(null, "El campo de Z0 esta vacio"
+                                + "\nEscriba el simbolo deseado para continuar", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        if (jt6.getText().length() == 1) {
+                            for (int i = 0; i < jt4.getText().length(); i++) {
+                                if (jt6.getText().charAt(0) == jt4.getText().charAt(i)) {
+                                    contAux++;
+                                }
+                            }
+                            //Si no es igual alguno del alfabeto de entrada Σ
+                            if (contAux == 0) {
+                                for (int i = 0; i < jt5.getText().length(); i++) {
+                                    if (jt6.getText().charAt(0) == jt5.getText().charAt(i)) {
+                                        contAux++;
+                                    }
+                                }
+                                //Si no es igual alguno del alfabeto de entrada de la pila de Γ
+                                if (contAux == 0) {
+                                    for (int i = 0; i < jComboBox1.getSelectedIndex(); i++) {
+                                        if (jt6.getText().charAt(0) - 48 == i) {
+                                            contAux++;
+                                        }
+                                    }
+                                    //Si no es igual a algun estado 
+                                    if (contAux == 0) {
+                                        comprobacion = true;
+                                        cont++;
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "El simbolo de Zo no puede ser igual a un estado"
+                                                + "\n   Escriba el simbolo de Zo de nuevo", "ERROR", JOptionPane.ERROR_MESSAGE);
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "El simbolo de Zo no puede ser igual al de alguno de Γ"
+                                            + "\n   Escriba el simbolo de Zo de nuevo", "ERROR", JOptionPane.ERROR_MESSAGE);
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(null, "El simbolo de Zo no puede ser igual al de alguno de Σ"
+                                        + "\n   Escriba el simbolo de Zo de nuevo", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "El campo de Z0 tiene mas de un simbolo"
+                                    + "\nEsto no se puede, dijite de nuevo el simbolo especifico Z0", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    break;
             }
+        } while (cont != 5 && comprobacion != false);
+
+        if (comprobacion == true) {
+            model1 = new Modelo(jComboBox1.getSelectedIndex(), jt2.getText(), jt3.getText(), jt4.getText(), jt5.getText(), jt6.getText());
+            setDatosCorrectos(true);
+            jb2.setEnabled(false);
+            jb3.setEnabled(true);
         }
     }
 
-    public void validar(String jt1, String jt2, String jt3, String jt4, String jt5, String jt6) {
+    public boolean validarCadena(JTextField jt4, JTextField jt7) {
+        int contAux = 0;
+        boolean valido = false;
 
+        if (jt7.getText().length() == 0) {
+            JOptionPane.showMessageDialog(null, "La cadena esta vacia"
+                    + "\nVuelva a intentarlo", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else {
+            for (int i = 0; i < jt7.getText().length(); i++) {
+                for (int j = 0; j < jt4.getText().length(); j++) {
+                    if (j % 2 == 0 && jt4.getText().charAt(j) == jt7.getText().charAt(i)) {
+                        contAux++;
+                    }
+                }
+            }
+            if (contAux == jt7.getText().length()) {
+                valido = true;
+            } else {
+                JOptionPane.showMessageDialog(null, "La cadena tiene un simbolo o varios"
+                        + "\nQue no corresponden al alfabeto de entrada(Σ)\nVuelva a intentarlo", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        return valido;
     }
+    
+    
 
     public void salir() {
         System.exit(0);
